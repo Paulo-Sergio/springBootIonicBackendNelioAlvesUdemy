@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.com.paulofranca.cursomc.dto.CategoriaDTO;
 import br.com.paulofranca.cursomc.model.Categoria;
 import br.com.paulofranca.cursomc.repositories.CategoriaRepository;
 import br.com.paulofranca.cursomc.services.exception.DataIntegrityException;
@@ -55,5 +56,9 @@ public class CategoriaService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		
 		return this.repository.findAll(pageRequest);
+	}
+	
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		return new Categoria(objDto.getId(), objDto.getNome());
 	}
 }
