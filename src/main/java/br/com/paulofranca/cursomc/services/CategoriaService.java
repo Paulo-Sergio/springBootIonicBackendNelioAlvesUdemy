@@ -25,7 +25,8 @@ public class CategoriaService {
 	public Categoria find(Integer id) {
 		Optional<Categoria> categoria = repository.findById(id);
 
-		return categoria.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
+		return categoria.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 
 	public Categoria insert(Categoria categoria) {
@@ -34,13 +35,14 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria categoria) {
-		this.find(categoria.getId());
-		return this.repository.save(categoria);
+		Categoria newObj = this.find(categoria.getId());
+		updateData(newObj, categoria);
+		return this.repository.save(newObj);
 	}
 
 	public void delete(Integer id) {
 		this.find(id);
-		
+
 		try {
 			this.repository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
@@ -51,14 +53,18 @@ public class CategoriaService {
 	public List<Categoria> findAll() {
 		return this.repository.findAll();
 	}
-	
+
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		
+
 		return this.repository.findAll(pageRequest);
 	}
-	
+
 	public Categoria fromDTO(CategoriaDTO objDto) {
 		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+
+	private void updateData(Categoria newObj, Categoria categoria) {
+		newObj.setNome(categoria.getNome());
 	}
 }
