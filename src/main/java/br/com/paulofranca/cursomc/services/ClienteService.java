@@ -1,12 +1,19 @@
 package br.com.paulofranca.cursomc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.com.paulofranca.cursomc.dto.ClienteDTO;
 import br.com.paulofranca.cursomc.model.Cliente;
 import br.com.paulofranca.cursomc.repositories.ClienteRepository;
+import br.com.paulofranca.cursomc.services.exception.DataIntegrityException;
 import br.com.paulofranca.cursomc.services.exception.ObjectNotFoundException;
 
 @Service
@@ -20,5 +27,40 @@ public class ClienteService {
 
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+	}
+
+	public Cliente update(Cliente cliente) {
+		Cliente newObj = this.find(cliente.getId());
+		updateData(newObj, cliente);
+		return this.repository.save(newObj);
+	}
+
+	public void delete(Integer id) {
+		this.find(id);
+
+		try {
+			this.repository.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possivel excluir pq há entidades relacionadas");
+		}
+	}
+
+	public List<Cliente> findAll() {
+		return this.repository.findAll();
+	}
+
+	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+
+		return this.repository.findAll(pageRequest);
+	}
+
+	public Cliente fromDTO(ClienteDTO objDto) {
+		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
+	}
+
+	private void updateData(Cliente newObj, Cliente obj) {
+		newObj.setNome(obj.getNome());
+		newObj.setEmail(obj.getEmail());
 	}
 }
