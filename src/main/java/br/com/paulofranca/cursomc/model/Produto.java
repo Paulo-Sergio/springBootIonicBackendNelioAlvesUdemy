@@ -49,8 +49,8 @@ public class Produto implements Serializable {
 	@JsonIgnore
 	public List<Pedido> getPedidos() {
 		List<Pedido> lista = new ArrayList<>();
-		for (ItemPedido x : this.itens) {
-			lista.add(x.getPedido());
+		for (ItemPedido ip : this.itens) {
+			lista.add(ip.getPedido());
 		}
 
 		return lista;

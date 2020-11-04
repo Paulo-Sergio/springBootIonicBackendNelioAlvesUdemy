@@ -39,8 +39,7 @@ public class Cliente implements Serializable {
 
 	@ElementCollection
 	@CollectionTable(name = "TELEFONE")
-	private Set<String> telefones = new HashSet<>();// vai ser gerada a tebela
-													// telefone com cliente_id
+	private Set<String> telefones = new HashSet<>();// vai ser gerada a tebela telefone com cliente_id
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")

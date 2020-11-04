@@ -33,9 +33,9 @@ public class CategoriaResource {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
-		Categoria obj = this.service.find(id);
+		Categoria categoria = this.service.find(id);
 
-		return ResponseEntity.ok().body(obj);
+		return ResponseEntity.ok().body(categoria);
 	}
 
 	@PostMapping
@@ -67,11 +67,10 @@ public class CategoriaResource {
 
 	@GetMapping()
 	public ResponseEntity<List<CategoriaDTO>> findAll() {
-		List<Categoria> lista = this.service.findAll();
+		List<Categoria> categorias = this.service.findAll();
+		List<CategoriaDTO> categoriasDTO = categorias.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
 
-		List<CategoriaDTO> listaDto = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
-
-		return ResponseEntity.ok().body(listaDto);
+		return ResponseEntity.ok().body(categoriasDTO);
 	}
 
 	@GetMapping(value = "/page")
