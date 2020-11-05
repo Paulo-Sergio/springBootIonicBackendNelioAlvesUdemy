@@ -35,13 +35,14 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
 	public boolean isValid(ClienteDTO objDto, ConstraintValidatorContext context) {
 		// pegando parametro na URI ex: http://localhost:8080/clientes/{2}
 		// (atributos/parametros armazenados em um Map)
+		@SuppressWarnings("unchecked")
 		Map<String, String> map = (Map<String, String>) this.request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 		Integer uriId = Integer.parseInt(map.get("id")); // ID do meu cliente para update
 
 		List<FieldMessage> list = new ArrayList<>();
 
-		Cliente aux = this.repository.findByEmail(objDto.getEmail());
-		if (aux != null && !aux.getId().equals(uriId)) {
+		Cliente cliente = this.repository.findByEmail(objDto.getEmail());
+		if (cliente != null && !cliente.getId().equals(uriId)) {
 			list.add(new FieldMessage("email", "E-mail já existente"));
 		}
 
