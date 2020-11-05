@@ -27,10 +27,10 @@ public class ClienteDTO implements Serializable {
 	public ClienteDTO() {
 	}
 
-	public ClienteDTO(Cliente obj) {
-		this.id = obj.getId();
-		this.nome = obj.getNome();
-		this.email = obj.getEmail();
+	public ClienteDTO(Cliente cilente) {
+		this.id = cilente.getId();
+		this.nome = cilente.getNome();
+		this.email = cilente.getEmail();
 	}
 
 	public Integer getId() {

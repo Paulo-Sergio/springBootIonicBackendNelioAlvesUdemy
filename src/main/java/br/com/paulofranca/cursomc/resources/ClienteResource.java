@@ -51,10 +51,10 @@ public class ClienteResource {
 
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
-		Cliente obj = this.service.fromDTO(objDto);
+		Cliente cliente = this.service.fromDTO(objDto);
 
-		obj.setId(id);
-		obj = this.service.update(obj);
+		cliente.setId(id);
+		cliente = this.service.update(cliente);
 
 		return ResponseEntity.noContent().build();
 	}
