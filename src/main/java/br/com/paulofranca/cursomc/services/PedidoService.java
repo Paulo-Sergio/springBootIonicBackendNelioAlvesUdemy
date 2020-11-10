@@ -16,6 +16,7 @@ import br.com.paulofranca.cursomc.model.enums.EstadoPagamento;
 import br.com.paulofranca.cursomc.repositories.ItemPedidoRepository;
 import br.com.paulofranca.cursomc.repositories.PagamentoRepository;
 import br.com.paulofranca.cursomc.repositories.PedidoRepository;
+import br.com.paulofranca.cursomc.services.email.EmailService;
 import br.com.paulofranca.cursomc.services.exception.ObjectNotFoundException;
 
 @Service
@@ -35,6 +36,9 @@ public class PedidoService {
 	
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@Autowired
 	private ClienteService clienteService;
@@ -71,7 +75,8 @@ public class PedidoService {
 		}
 		
 		itemPedidoRepository.saveAll(pedido.getItens());
-		System.out.println(pedido);
+
+		emailService.sendOrderConfirmationEmail(pedido);
 		
 		return pedido;
 	}
