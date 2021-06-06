@@ -27,13 +27,13 @@ import br.com.paulofranca.cursomc.services.exception.ObjectNotFoundException;
 public class ClienteService {
 
 	@Autowired
-	private ClienteRepository repository;
+	private ClienteRepository clienteRepository;
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 
 	public Cliente find(Integer id) {
-		Optional<Cliente> obj = repository.findById(id);
+		Optional<Cliente> obj = clienteRepository.findById(id);
 
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
@@ -41,7 +41,7 @@ public class ClienteService {
 	@Transactional
 	public Cliente insert(Cliente cliente) {
 		cliente.setId(null);
-		cliente = this.repository.save(cliente);
+		cliente = this.clienteRepository.save(cliente);
 		enderecoRepository.saveAll(cliente.getEnderecos());
 		return cliente;
 	}
@@ -49,26 +49,26 @@ public class ClienteService {
 	public Cliente update(Cliente cliente) {
 		Cliente newObj = this.find(cliente.getId());
 		updateData(newObj, cliente);
-		return this.repository.save(newObj);
+		return this.clienteRepository.save(newObj);
 	}
 
 	public void delete(Integer id) {
 		this.find(id);
 
 		try {
-			this.repository.deleteById(id);
+			this.clienteRepository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel excluir porque há pedidos relacionados");
 		}
 	}
 
 	public List<Cliente> findAll() {
-		return this.repository.findAll();
+		return this.clienteRepository.findAll();
 	}
 
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return this.repository.findAll(pageRequest);
+		return this.clienteRepository.findAll(pageRequest);
 	}
 
 	public Cliente fromDTO(ClienteDTO objDto) {

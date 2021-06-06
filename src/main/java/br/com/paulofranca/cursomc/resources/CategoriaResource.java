@@ -68,18 +68,21 @@ public class CategoriaResource {
 	@GetMapping()
 	public ResponseEntity<List<CategoriaDTO>> findAll() {
 		List<Categoria> categorias = this.service.findAll();
-		List<CategoriaDTO> categoriasDTO = categorias.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+		List<CategoriaDTO> categoriasDTO = categorias.stream()
+				.map(categoria -> new CategoriaDTO(categoria))
+				.collect(Collectors.toList());
 
 		return ResponseEntity.ok().body(categoriasDTO);
 	}
 
 	@GetMapping(value = "/page")
-	public ResponseEntity<Page<CategoriaDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public ResponseEntity<Page<CategoriaDTO>> findPage(
+			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		Page<Categoria> lista = this.service.findPage(page, linesPerPage, orderBy, direction);
-		Page<CategoriaDTO> listaDto = lista.map(obj -> new CategoriaDTO(obj));
+		Page<CategoriaDTO> listaDto = lista.map(categoria -> new CategoriaDTO(categoria));
 		return ResponseEntity.ok().body(listaDto);
 	}
 }

@@ -19,13 +19,13 @@ import br.com.paulofranca.cursomc.services.exception.ObjectNotFoundException;
 public class ProdutoService {
 
 	@Autowired
-	private ProdutoRepository repository;
+	private ProdutoRepository produtoRepository;
 	
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 
 	public Produto find(Integer id) {
-		Optional<Produto> produto = repository.findById(id);
+		Optional<Produto> produto = produtoRepository.findById(id);
 
 		return produto.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Produto.class.getName()));
@@ -36,6 +36,6 @@ public class ProdutoService {
 		
 		List<Categoria> categorias = categoriaRepository.findAllById(ids);
 		
-		return repository.search(nome, categorias, pageRequest);
+		return produtoRepository.search(nome, categorias, pageRequest);
 	}
 }
