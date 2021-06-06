@@ -31,13 +31,13 @@ public class CategoriaService {
 
 	public Categoria insert(Categoria categoria) {
 		categoria.setId(null);
-		return this.categoriaRepository.save(categoria);
+		return categoriaRepository.save(categoria);
 	}
 
 	public Categoria update(Categoria categoria) {
 		Categoria newObj = this.find(categoria.getId());
 		updateData(newObj, categoria);
-		return this.categoriaRepository.save(newObj);
+		return categoriaRepository.save(newObj);
 	}
 
 	public void delete(Integer id) {
@@ -56,7 +56,7 @@ public class CategoriaService {
 
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return this.categoriaRepository.findAll(pageRequest);
+		return categoriaRepository.findAll(pageRequest);
 	}
 
 	public Categoria fromDTO(CategoriaDTO objDto) {

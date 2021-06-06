@@ -30,20 +30,20 @@ import br.com.paulofranca.cursomc.services.ClienteService;
 public class ClienteResource {
 
 	@Autowired
-	private ClienteService service;
+	private ClienteService clienteService;
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
-		Cliente obj = this.service.find(id);
+		Cliente obj = this.clienteService.find(id);
 
 		return ResponseEntity.ok().body(obj);
 	}
 
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO clienteNewDto) {
-		Cliente cliente = this.service.fromDTO(clienteNewDto);
+		Cliente cliente = this.clienteService.fromDTO(clienteNewDto);
 
-		cliente = this.service.insert(cliente);
+		cliente = this.clienteService.insert(cliente);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
 
 		return ResponseEntity.created(uri).build();
@@ -51,24 +51,24 @@ public class ClienteResource {
 
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
-		Cliente cliente = this.service.fromDTO(objDto);
+		Cliente cliente = this.clienteService.fromDTO(objDto);
 
 		cliente.setId(id);
-		cliente = this.service.update(cliente);
+		cliente = this.clienteService.update(cliente);
 
 		return ResponseEntity.noContent().build();
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
-		this.service.delete(id);
+		this.clienteService.delete(id);
 
 		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping()
 	public ResponseEntity<List<ClienteDTO>> findAll() {
-		List<Cliente> lista = this.service.findAll();
+		List<Cliente> lista = this.clienteService.findAll();
 
 		List<ClienteDTO> listaDto = lista.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
 
@@ -80,7 +80,7 @@ public class ClienteResource {
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-		Page<Cliente> lista = this.service.findPage(page, linesPerPage, orderBy, direction);
+		Page<Cliente> lista = this.clienteService.findPage(page, linesPerPage, orderBy, direction);
 
 		Page<ClienteDTO> listaDto = lista.map(obj -> new ClienteDTO(obj));
 

@@ -21,16 +21,17 @@ import br.com.paulofranca.cursomc.services.ProdutoService;
 public class ProdutoResource {
 
 	@Autowired
-	private ProdutoService service;
+	private ProdutoService produtoService;
 	
 	@GetMapping(value="/{id}")
 	public ResponseEntity<Produto> find(@PathVariable Integer id) {
-		Produto produto = this.service.find(id);
+		Produto produto = produtoService.find(id);
 		return ResponseEntity.ok().body(produto);
 	}
 	
 	@GetMapping()
-	public ResponseEntity<Page<ProdutoDTO>> findPage(@RequestParam(value = "nome", defaultValue = "") String nome,
+	public ResponseEntity<Page<ProdutoDTO>> findPage(
+			@RequestParam(value = "nome", defaultValue = "") String nome,
 			@RequestParam(value = "categorias", defaultValue = "") String categorias,
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
@@ -39,8 +40,8 @@ public class ProdutoResource {
 		String nomeDecoded = URL.decodeParam(nome);
 		List<Integer> idsCategorias = URL.decodeIntList(categorias);
 		
-		Page<Produto> lista = this.service.search(nomeDecoded, idsCategorias, page, linesPerPage, orderBy, direction);
-		Page<ProdutoDTO> listaDTO = lista.map(obj -> new ProdutoDTO(obj));
+		Page<Produto> lista = produtoService.search(nomeDecoded, idsCategorias, page, linesPerPage, orderBy, direction);
+		Page<ProdutoDTO> listaDTO = lista.map(produto -> new ProdutoDTO(produto));
 		return ResponseEntity.ok().body(listaDTO);
 	}
 }

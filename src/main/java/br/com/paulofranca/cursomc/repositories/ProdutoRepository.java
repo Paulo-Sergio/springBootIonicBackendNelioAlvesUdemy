@@ -15,8 +15,8 @@ import br.com.paulofranca.cursomc.model.Produto;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
-	@Query("SELECT DISTINCT prod FROM Produto prod INNER JOIN prod.categorias cat"
-			+ " WHERE prod.nome LIKE %:nome% AND cat IN :categorias")
+	@Query("SELECT DISTINCT produto FROM Produto produto INNER JOIN produto.categorias cat"
+			+ " WHERE produto.nome LIKE %:nome% AND cat IN :categorias")
 	Page<Produto> search(@Param("nome") String nome, @Param("categorias") List<Categoria> categorias, Pageable pageRequest);
 	//Page<Produto> findDistinctByNomeContainingAndCategoriasIn(String nome, List<Categoria> categorias, Pageable pageRequest);
 

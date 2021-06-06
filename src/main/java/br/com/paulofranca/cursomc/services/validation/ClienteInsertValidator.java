@@ -18,7 +18,7 @@ import br.com.paulofranca.cursomc.services.validation.utils.BR;
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
 
 	@Autowired
-	private ClienteRepository repository;
+	private ClienteRepository clienteRepository;
 
 	@Override
 	public void initialize(ClienteInsert ann) {
@@ -36,7 +36,7 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 			list.add(new FieldMessage("cpfOuCnpj", "CNPJ inválido"));
 		}
 
-		Cliente cliente = this.repository.findByEmail(objDto.getEmail());
+		Cliente cliente = this.clienteRepository.findByEmail(objDto.getEmail());
 		if (cliente != null) {
 			list.add(new FieldMessage("email", "E-mail já existente"));
 		}

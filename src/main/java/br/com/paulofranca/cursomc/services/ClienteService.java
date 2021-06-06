@@ -41,7 +41,7 @@ public class ClienteService {
 	@Transactional
 	public Cliente insert(Cliente cliente) {
 		cliente.setId(null);
-		cliente = this.clienteRepository.save(cliente);
+		cliente = clienteRepository.save(cliente);
 		enderecoRepository.saveAll(cliente.getEnderecos());
 		return cliente;
 	}
@@ -63,7 +63,7 @@ public class ClienteService {
 	}
 
 	public List<Cliente> findAll() {
-		return this.clienteRepository.findAll();
+		return clienteRepository.findAll();
 	}
 
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
@@ -71,22 +71,22 @@ public class ClienteService {
 		return this.clienteRepository.findAll(pageRequest);
 	}
 
-	public Cliente fromDTO(ClienteDTO objDto) {
-		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
+	public Cliente fromDTO(ClienteDTO clienteDto) {
+		return new Cliente(clienteDto.getId(), clienteDto.getNome(), clienteDto.getEmail(), null, null);
 	}
 
-	public Cliente fromDTO(ClienteNewDTO objDto) {
-		Cliente cliente = new Cliente(null, objDto.getNome(), objDto.getEmail(), objDto.getCpfOuCnpj(), TipoCliente.toEnum(objDto.getTipo()));
-		Cidade cidade = new Cidade(objDto.getCidadeId(), null, null);
-		Endereco endereco = new Endereco(null, objDto.getLogradouro(), objDto.getNumero(), objDto.getComplemento(), objDto.getBairro(), objDto.getCep(),
+	public Cliente fromDTO(ClienteNewDTO clienteNewDto) {
+		Cliente cliente = new Cliente(null, clienteNewDto.getNome(), clienteNewDto.getEmail(), clienteNewDto.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewDto.getTipo()));
+		Cidade cidade = new Cidade(clienteNewDto.getCidadeId(), null, null);
+		Endereco endereco = new Endereco(null, clienteNewDto.getLogradouro(), clienteNewDto.getNumero(), clienteNewDto.getComplemento(), clienteNewDto.getBairro(), clienteNewDto.getCep(),
 				cliente, cidade);
 		cliente.getEnderecos().add(endereco);
-		cliente.getTelefones().add(objDto.getTelefone1());
-		if (objDto.getTelefone2() != null) {
-			cliente.getTelefones().add(objDto.getTelefone2());
+		cliente.getTelefones().add(clienteNewDto.getTelefone1());
+		if (clienteNewDto.getTelefone2() != null) {
+			cliente.getTelefones().add(clienteNewDto.getTelefone2());
 		}
-		if (objDto.getTelefone3() != null) {
-			cliente.getTelefones().add(objDto.getTelefone3());
+		if (clienteNewDto.getTelefone3() != null) {
+			cliente.getTelefones().add(clienteNewDto.getTelefone3());
 		}
 		return cliente;
 	}
