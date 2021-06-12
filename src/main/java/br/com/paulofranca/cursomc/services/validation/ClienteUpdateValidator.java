@@ -1,7 +1,6 @@
 package br.com.paulofranca.cursomc.services.validation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +13,8 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import br.com.paulofranca.cursomc.dto.ClienteDTO;
 import br.com.paulofranca.cursomc.model.Cliente;
-import br.com.paulofranca.cursomc.model.enums.TipoCliente;
 import br.com.paulofranca.cursomc.repositories.ClienteRepository;
 import br.com.paulofranca.cursomc.resources.exception.FieldMessage;
-import br.com.paulofranca.cursomc.services.validation.utils.BR;
 
 public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate, ClienteDTO> {
 

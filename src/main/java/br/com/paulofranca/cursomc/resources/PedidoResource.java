@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.paulofranca.cursomc.dto.CategoriaDTO;
-import br.com.paulofranca.cursomc.model.Categoria;
 import br.com.paulofranca.cursomc.model.Pedido;
 import br.com.paulofranca.cursomc.services.PedidoService;
 
@@ -24,18 +22,18 @@ import br.com.paulofranca.cursomc.services.PedidoService;
 public class PedidoResource {
 
 	@Autowired
-	private PedidoService service;
+	private PedidoService pedidoService;
 	
 	@GetMapping(value="/{id}")
 	public ResponseEntity<Pedido> find(@PathVariable Integer id) {
-		Pedido obj = this.service.find(id);
+		Pedido obj = this.pedidoService.find(id);
 		
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido pedido) {
-		pedido = this.service.insert(pedido);
+		pedido = pedidoService.insert(pedido);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(pedido.getId()).toUri();
 
 		return ResponseEntity.created(uri).build();
