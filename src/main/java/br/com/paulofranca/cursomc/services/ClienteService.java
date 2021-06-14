@@ -18,9 +18,12 @@ import br.com.paulofranca.cursomc.dto.ClienteNewDTO;
 import br.com.paulofranca.cursomc.model.Cidade;
 import br.com.paulofranca.cursomc.model.Cliente;
 import br.com.paulofranca.cursomc.model.Endereco;
+import br.com.paulofranca.cursomc.model.enums.Perfil;
 import br.com.paulofranca.cursomc.model.enums.TipoCliente;
 import br.com.paulofranca.cursomc.repositories.ClienteRepository;
 import br.com.paulofranca.cursomc.repositories.EnderecoRepository;
+import br.com.paulofranca.cursomc.security.UserSpringSecurity;
+import br.com.paulofranca.cursomc.services.exception.AuthorizationException;
 import br.com.paulofranca.cursomc.services.exception.DataIntegrityException;
 import br.com.paulofranca.cursomc.services.exception.ObjectNotFoundException;
 
@@ -37,6 +40,10 @@ public class ClienteService {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	public Cliente find(Integer id) {
+		UserSpringSecurity user = UserService.authenticated();
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
 		Optional<Cliente> obj = clienteRepository.findById(id);
 
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
